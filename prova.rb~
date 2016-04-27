@@ -1,0 +1,16 @@
+load "ufficio.rb"
+load "persona.rb"
+def pinu(ufficio)
+
+end
+p=Persona.new("pippo","pippa")
+p1=Persona.new("astrobalo","pippa")
+p2=Persona.new("giangiacomo","pippa")
+i=Ufficio.new("ssss",500)
+i.add(p)
+i.add(p1)
+i.add(p2)
+i.stampa_imp
+
+puts p
+puts i

@@ -1,0 +1,14 @@
+load "ufficio.rb"
+load "persona.rb"
+class Tipolink
+    @Ufficio
+    @Persona 
+
+    def initialize (ufficio,persona)
+        @Ufficio = ufficio 
+        @persona = persona
+    end
+    def to_s()
+	return @ufficio+@persona
+    end
+end

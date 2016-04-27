@@ -1,0 +1,40 @@
+<html>
+    <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+   <script>
+       function funzioneLogout(){
+            location.href="http://localhost:3000/logout"
+           }
+       /*
+        function getCode(){
+            var code=getParameterByName('code');
+            window.alert(code);
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open( "GET", "https://graph.facebook.com/v2.3/oauth/access_token?client_id=469295763275586&redirect_uri=http://localhost:3000/welcomePage&client_secret=c70d3441f6a7b19d88f0bea0daadf9d0&code="+code, false ); // false for synchronous request
+            xmlHttp.send( null );
+            var obj=JSON.parse(xmlHttp.responseText);
+            alert(obj.access_token);
+            }
+        function getParameterByName(name) {
+            url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)", "i"),
+            results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+    */
+    </script>
+<head>
+	<title> Home Page </title>
+</head>
+
+<body>
+    <input type="button" class="rightBotton" value="Logout" onclick="funzioneLogout()"/>
+    <br><br>
+	<h1>Welcome</h1>
+    <!-- <input type="button" value="visualizza code" onClick="getCode()"> -->
+    <center>
+</body>
+</html>
+

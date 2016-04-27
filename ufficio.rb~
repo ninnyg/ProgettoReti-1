@@ -1,0 +1,23 @@
+
+class Ufficio
+    @indirizzo
+    @metratura 
+    @impiegati
+    def initialize (indirizzo, metratura)
+        @indirizzo = indirizzo
+        @metratura = metratura
+	@impiegati = Array.new
+    end
+    def add(persona)
+	@impiegati.push(persona) 
+    end
+    def remove(persona)
+	@impiegati.delete(persona)
+    end
+    def stampa_imp(){
+	puts @impiegati
+    end 
+    def to_s()
+	return @indirizzo+ @metratura.to_s
+    end
+end

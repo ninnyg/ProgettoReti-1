@@ -1,0 +1,248 @@
+LXLE-BIAR-v1.3
+
+Ciao,
+
+questa è le distribuzione Linux LXLE pilota per il corso di 
+laurea di Ingegneria Informatica e Automatica della Sapienza (BIAR).
+
+Informazioni base:
+- Sistema operativo: LXLE 64 bit
+- Immagine disco boot: 16 GB
+- Utente amministratore: biar (password=biar)
+- Contatti: Camil Demetrescu <demetres@dis.uniroma1.it>
+            Daniele Cono D'Elia <delia@dis.uniroma1.it>
+	    Emilio Coppa <coppa@di.uniroma1.it>
+
+Roma, 24 febbraio 2016
+
+Enjoy,
+il team docenti BIAR
+
+-------------------------------------------------------------------------
+Pacchetti extra installati (- tramite APT, * manualmente):
+- geany
+- valgrind
+- tree
+- toolchain Scala
+- eclipse Luna configurato per Scala
+- gcc-multilib (supporto librerie 32 bit)
+- htop
+- ndisasm
+- cmake
+* AMD APP SDK 3.0
+- Ubuntu Tweak
+- zerofree
+- localepurge
+- libc6-dbg:i386 (per debugging binari a 32 bit)
+- mysql-workbench
+- mysql-server
+- openssh-server
+* hadoop
+- emacs
+- gnuplot, octave
+- cmake, g++
+- git, subversion
+- libeigen3-dev freeglut3-dev libsuitesparse-metis-dev
+* Intellij IDEA (Community Edition)
+* Oracle JDK 8u73 + NetBeans 8.1
+* Ruby on Rails
+* Tomcat
+
+
+-------------------------------------------------------------------------
+Log cambiamenti: v.1.4
+- installazione da root del bundle JDK 8u73 + NetBeans 8.1 in /usr/local (subfolders ad hoc) tramite binario a 64 bit scaricato da http://www.oracle.com/technetwork/java/javase/downloads/jdk-netbeans-jsp-142931.html (aggiornamenti per NetBeans abilitati durante l'installazione; collezione usage statistics disattivata)
+- installazione plugin extra per NetBeans: Java EE base, RESTful Web Services, SOAP Web Services
+- fix /home/biar/.config/gtk-3.0/bookmarks per bookmarks nel file manager ('qwerty' -> 'biar')
+- riorganizzazione file .bashrc per esportazione della variabile PATH
+- default mirror per APT è ora Main Server (previously: GARR)
+- installazione Ruby on Rails tramite la seguente procedura:
+	cd /home/biar
+	echo "alias l='ls -lah'" >> .bashrc
+	sudo apt-get install git # già presente
+	sudo apt-get install nodejs
+	gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+	curl -sSL https://get.rvm.io | bash
+	source /home/biar/.rvm/scripts/rvm
+	echo 'export rvm_path=$HOME/.rvm' >> .bashrc # rvm_path deve essere lowercase!
+	echo '[[ -r $rvm_path/scripts/completion ]] && . $rvm_path/scripts/completion' >> .bashrc
+	echo 'source ~/.rvm/scripts/rvm' >> .bashrc
+	rvm install ruby-2.3.0
+	rvm alias create default ruby-2.3.0
+	gem install rails
+- installazione manuale Tomcat
+	unpack (da root) in /opt/tomcat di apache-tomcat-8.0.32.tar.gz (scaricato via https://tomcat.apache.org/download-80.cgi)
+	sudo chown -R biar.biar /opt/tomcat
+	.bashrc <--- aggiungere: export JAVA_HOME="/usr/local/jdk1.8.0_73/"
+	.bashrc <--- aggiungere: export CATALINA_HOME="/opt/tomcat"
+	aggiungere a /opt/tomcat/conf/tomcat-users.xml nella sezione <tomcat-users>:
+		<role rolename="manager-gui"/>
+		<role rolename="manager-script"/>
+		<role rolename="manager-jmx"/>
+		<role rolename="manager-status"/>
+		<role rolename="admin-gui"/>
+		<role rolename="admin-script"/>
+		<user username="biar" password="biar" roles="manager-gui,manager-script,manager-jmx,manager-status,admin-gui,admin-script"/>
+	(opzionale) avviare Tomcat con /opt/tomcat/bin/startup.sh e testare su localhost:8080
+- integrazione Tomcat con NetBeans
+	reinizializzare il keyring della GUI con rm /home/biar/.local/share/keyrings/*
+	aprire NetBeans e fare Add Server da Tools -> Server
+	aggiungere il server /opt/tomcat con credenziali <biar, biar>
+	nel tab Connection per il server creato, abilitare Enable HTTP Monitoring e inserire le credenziali <biar, biar> di accesso (contestualmente, inizializzare il keyring con <biar,biar>)
+	chiudere la schermata iniziale di Netbeans
+	aprire il tab Services, quindi in Servers si può avviare/fermare Tomcat con right click
+- rimozione in /opt di cartelle VBoxGuestAdditions pre-5.0.10
+- pulizia di routine con apt-get clean e zerofree
+	
+
+-------------------------------------------------------------------------
+Log cambiamenti: v1.4-RC2
+- sudo apt-get install libeigen3-dev freeglut3-dev libsuitesparse-metis-dev octave g++ git subversion cmake make gnuplot
+- rimosso pannello in basso, inserito window list in pannello in alto (bug VBox)
+- installazione Intellij IDEA community edition 15.0.3 con plugins (scala, python, bash)
+  + wget https://download.jetbrains.com/idea/ideaIC-15.0.3.tar.gz
+  + tar xvf ideaIC-15.0.3.tar.gz && rm ideaIC-15.0.3.tar.gz && sudo mv idea-IC-143.1821.5/ /opt/idea-IC
+  + file: /usr/share/applications/jetbrains-idea-ce.desktop
+	[Desktop Entry]
+	Version=1.0
+	Type=Application
+	Name=IntelliJ IDEA Community Edition
+	Icon=/opt/idea-IC/bin/idea.png
+	Exec="/opt/idea-IC/bin/idea.sh" %f
+	Comment=Develop with pleasure!
+	Categories=Development;IDE;
+	Terminal=false
+	StartupWMClass=jetbrains-idea-ce
+  + definito SDK Scala e Java
+
+Log cambiamenti: v1.4-RC1
+- installazione di emacs
+- sfondo Sapienza
+- impostazione pannello finestre (window list) in basso, con 2 virtual desktop
+- terminal e browser launcher nel pannello in alto
+- cestino compare come icona sul desktop e non come app sul taskbar
+- aggiunto supporto per tastiera US (IT è quella di default)
+
+
+-------------------------------------------------------------------------
+Log cambiamenti: v1.4-beta
+- ridotti workspace ad uno: obconf > desktops > number of desktops
+- installazione Hadoop
+  + sudo apt-get update; sudo apt-get install openssh-server; ssh-keygen -t rsa -P ""; cat $HOME/.ssh/id_rsa.pub >> $HOME/.ssh/authorized_keys; ssh localhost (type Y); exit
+  + wget http://mirrors.muzzy.it/apache/hadoop/common/hadoop-2.7.1/hadoop-2.7.1.tar.gz
+  + tar xvf hadoop-2.7.1.tar.gz; rm hadoop-2.7.1.tar.gz
+  + ln -s /opt/hadoop-2.7.1/ hadoop 
+  + edit ~/hadoop/etc/hadoop/hadoop-env.sh insert (after the comment "The java implementation to use."):
+	export JAVA_HOME="`dirname $(readlink /etc/alternatives/java)`/../"
+	export HADOOP_COMMON_LIB_NATIVE_DIR="~/hadoop/lib"
+	export HADOOP_OPTS="$HADOOP_OPTS -Djava.library.path=~/hadoop/lib"
+  + mkdir -p ~/hadoop/data/namenode; 
+  + mkdir -p ~/hadoop/data/datanode
+  + in ~/hadoop/etc/hadoop/core-site.xml (inside <configuration> tag):
+	<property>
+	  <name>fs.default.name</name>
+	  <value>hdfs://localhost:9000</value>
+	</property>
+  + in ~/hadoop/etc/hadoop/hdfs-site.xml (inside <configuration> tag):
+	<property>
+	  <name>dfs.replication</name>
+	  <value>1</value>
+	</property>
+
+	<property>
+	  <name>dfs.namenode.name.dir</name>
+	  <value>${user.home}/hadoop/data/namenode</value>
+	</property>
+
+	<property>
+	  <name>dfs.datanode.data.dir</name>
+	  <value>${user.home}/hadoop/data/datanode</value>
+	</property>
+  + in ~/hadoop/etc/hadoop/yarn-site.xml (inside <configuration> tag):
+	<property>
+	  <name>yarn.nodemanager.aux-services</name>
+	  <value>mapreduce_shuffle</value>
+	</property>
+
+	<property>
+	  <name>yarn.nodemanager.aux-services.mapreduce.shuffle.class</name>
+	  <value>org.apache.hadoop.mapred.ShuffleHandler</value>
+	</property>
+
+	<property>
+	  <name>yarn.nodemanager.resource.memory-mb</name>
+	  <value>3072</value>
+	</property>
+  + cp ~/hadoop/etc/hadoop/mapred-site.xml.template ~/hadoop/etc/hadoop/mapred-site.xml
+  + in ~/hadoop/etc/hadoop/mapred-site.xml (inside <configuration> tag):
+	<property>
+	  <name>mapreduce.framework.name</name>
+	  <value>yarn</value>
+	</property>
+  + echo "export PATH=$PATH:~/hadoop/bin:~/hadoop/sbin" >> ~/.bashrc; source ~/.bashrc
+  + hdfs namenode -format
+  + added ~/Desktop/HADOOP-LEGGIMI.txt
+
+
+-------------------------------------------------------------------------
+Log cambiamenti: v1.3 [6.0G used]
+- pulizia cache APT (sudo apt-get clean)
+- impostata opzione lower_case_table_names = 1 in /etc/mysql/my.cnf
+- installazione mysql-workbench e mysql-server per corso Basi di Dati (password: biar)
+- eseguito sudo dpkg-reconfigure localepurge
+- supporto per binari a 32 bit per valgrind ha richiesto installazione di libc6-dbg:i386
+- scelto mirror GARR per download pacchetti apt (Preferences -> Software & Updates)
+- disabilitati gli aggiornamenti di sicurezza automatici (sudo dpkg-reconfigure unattended-upgrades)
+
+-------------------------------------------------------------------------
+Log cambiamenti: v1.2a
+- eseguito sudo apt-get update --fix-missing
+- aggiunto alias ls="ls --color=auto" a .bashrc
+- installato ubuntu-tweak (sudo apt-get install ubuntu-tweak)
+- usato System Tools->Ubuntu Tweak->Janitor per: 
+  + rimozione versioni kernel precedenti (corrente: 3.13.0-74)
+  + rimozione package non usati
+- installato localepurge (sudo apt-get install localepurge) configurato con:
+  + en, en_US*, it, it_IT* 
+  + dpkg --path-exclude? no
+  + purge man? yes
+- eseguito sudo localepurge (128 MB eliminati)
+- installato zerofree (sudo apt-get install zerofree)
+
+-------------------------------------------------------------------------
+Log cambiamenti: v1.2
+- spostata task bar in alto
+- ridimensionato disco da 8 a 16 GB
+- impostata indentazione di default mediante spazi in geany (Edit->Preferences->Editor->Intendation)
+- aggiunto utente biar a gruppo vboxsf (sudo usermod -a -G vboxsf biar)
+- installato disassemblatore ndisasm (sudo apt-get install nasm)
+- installato tool htop performance monitoring (sudo apt-get install htop)
+- installati build-essential (sudo apt-get install build-essential)
+- installato linux-headers-3.13.0-74-generic (sudo apt-get install linux-headers-3.13.0-74-generic)
+- installate guest additions 5.0.10
+- installato AMD APP SDK 3.0 OpenCL (scaricato da http://developer.amd.com/tools-and-sdks/opencl-zone/amd-accelerated-parallel-processing-app-sdk/):
+   + sudo ./AMD-APP-SDK-v3.0.130.135-GA-linux64.sh
+   + sudo ln -sf /opt/AMDAPPSDK-3.0/include/CL /usr/include
+   + sudo ln -sf /opt/AMDAPPSDK-3.0/lib/x86_64/* /usr/lib/
+   + sudo ldconfig
+- installato cmake (sudo apt-get install cmake)
+
+-------------------------------------------------------------------------
+Log cambiamenti: v1.1
+- installate librerie C/C++ 32 bit (sudo apt-get install gcc-multilib)
+
+-------------------------------------------------------------------------
+Task utili:
+- versione corrente kernel: uname -r
+- spazio usato su disco: df -h
+- compattare disco VirtualBox:
+  + premere shift durante l'avvio LXLE
+  + selezionare advanced -> recovery mode -> root
+  + rimontare disco read-only: mount -n -o remount,ro -t ext2 /dev/sda1 /
+  + azzerare byte non usati: zerofree /dev/sda1
+  + stop sistema: halt
+  + da ambiente host: vboxmanage modifymedium /.../lxle-biar-disk1.vdi --compact
+- pulire history bash:
+  + history -c
+  + history -w
+

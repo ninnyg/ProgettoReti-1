@@ -1,0 +1,12 @@
+class Persona
+   @nome
+    @cognome 
+
+    def initialize (nome,cognome)
+        @nome = nome
+        @cognome = cognome
+    end
+    def to_s()
+	return @nome+@cognome
+    end
+end
